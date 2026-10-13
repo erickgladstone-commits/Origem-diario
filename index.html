@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Navegador Web</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+      max-width: 340px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 8px;
+    }
+
+    .icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .description {
+      font-size: 14px;
+      color: #a0a0a0;
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .link-box {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 13px;
+      line-height: 1.4;
+      word-break: break-all;
+      cursor: pointer;
+      padding: 12px 8px;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+      width: 100%;
+      user-select: none;
+    }
+
+    .link-box:active {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .feedback {
+      font-size: 13px;
+      color: #25D366;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      height: 20px;
+      margin-top: -8px;
+    }
+
+    .feedback.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Shield + lock icon -->
+    <div class="icon">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 6C20.954 6 12 14.954 12 26v6c0 1.105.895 2 2 2h4v20c0 3.314 2.686 6 6 6h16c3.314 0 6-2.686 6-6V34h4c1.105 0 2-.895 2-2v-6c0-11.046-8.954-20-20-20z" stroke="#8a8a8a" stroke-width="2.5" fill="none"/>
+        <rect x="22" y="34" width="20" height="18" rx="2" stroke="#8a8a8a" stroke-width="2.5" fill="none"/>
+        <circle cx="32" cy="43" r="3" fill="#8a8a8a"/>
+        <path d="M32 46v3" stroke="#8a8a8a" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <h1>Abra este link no seu navegador</h1>
+
+    <p class="description">
+      O TikTok não consegue abrir esta página diretamente. Copie e cole o link no seu navegador para continuar.
+    </p>
+
+    <div class="link-box" id="linkBox" onclick="copyLink()">
+      https://chat.whatsapp.com/IqRa5fpp1FF37wmDLPybfM?s=cl&p=a&mlu=4&ilr=4
+    </div>
+
+    <div class="feedback" id="feedback">Link copiado!</div>
+  </div>
+
+  <script>
+    const LINK = "https://chat.whatsapp.com/IqRa5fpp1FF37wmDLPybfM?s=cl&p=a&mlu=4&ilr=4";
+
+    function copyLink() {
+      // Modern clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(LINK).then(showFeedback).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+    }
+
+    function fallbackCopy() {
+      const textarea = document.createElement("textarea");
+      textarea.value = LINK;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        showFeedback();
+      } catch (e) {
+        alert("Não foi possível copiar. Selecione o link manualmente.");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showFeedback() {
+      const feedback = document.getElementById("feedback");
+      feedback.classList.add("show");
+      setTimeout(() => {
+        feedback.classList.remove("show");
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
